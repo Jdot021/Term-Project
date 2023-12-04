@@ -1,0 +1,167 @@
+1. SELECT DISTINCT Subjects.CategoryName
+FROM Books
+JOIN Supplier ON Books.SupplierID = Supplier.SupplierID
+JOIN Subjects ON Books.SubjectID = Subjects.SubjectID
+WHERE Supplier.CompanyName = 'supplier2';
+
+
+2.SELECT Title, UnitPrice
+FROM Books
+JOIN Supplier ON Books.SupplierID = Supplier.SupplierID
+WHERE Supplier.CompanyName = 'supplier3'
+ORDER BY UnitPrice DESC
+LIMIT 1;
+
+
+
+3.SELECT DISTINCT Books.Title
+FROM Books
+JOIN Order_Detail ON Books.BookID = Order_Detail.BookID
+JOIN Orders ON Order_Detail.OrderID = Orders.OrderID
+JOIN Customer ON Orders.CID = Customer.CID
+WHERE Customer.LastName = 'lastname1' AND Customer.FirstName = 'firstname1';
+
+
+
+4.SELECT Title
+FROM Books
+WHERE Quantity > 10;
+
+
+
+5.SELECT SUM(Books.UnitPrice * Order_Detail.Quantity) AS TotalPrice
+FROM Order_Detail
+JOIN Books ON Order_Detail.BookID = Books.BookID
+JOIN Orders ON Order_Detail.OrderID = Orders.OrderID
+JOIN Customer ON Orders.CID = Customer.CID
+WHERE Customer.LastName = 'lastname1' AND Customer.FirstName = 'firstname1';
+
+
+
+6.SELECT Customer.FirstName, Customer.LastName
+FROM Customer
+JOIN Orders ON Customer.CID = Orders.CID
+JOIN Order_Detail ON Orders.OrderID = Order_Detail.OrderID
+JOIN Books ON Order_Detail.BookID = Books.BookID
+GROUP BY Customer.CID
+HAVING SUM(Books.UnitPrice * Order_Detail.Quantity) < 80;
+
+
+
+7.SELECT Title
+FROM Books
+JOIN Supplier ON Books.SupplierID = Supplier.SupplierID
+WHERE Supplier.CompanyName = 'supplier2';
+
+
+
+8.SELECT Customer.FirstName, Customer.LastName, SUM(Books.UnitPrice * Order_Detail.Quantity) AS TotalPrice
+FROM Customer
+JOIN Orders ON Customer.CID = Orders.CID
+JOIN Order_Detail ON Orders.OrderID = Order_Detail.OrderID
+JOIN Books ON Order_Detail.BookID = Books.BookID
+GROUP BY Customer.CID
+ORDER BY TotalPrice DESC;
+
+
+
+9.SELECT Books.Title, Shipper.ShipperName
+FROM Books
+JOIN Order_Detail ON Books.BookID = Order_Detail.BookID
+JOIN Orders ON Order_Detail.OrderID = Orders.OrderID
+JOIN Shipper ON Orders.SID = Shipper.SID
+WHERE Orders.ShippedDate = '2016-08-04';
+
+
+
+10.SELECT DISTINCT Books.Title
+FROM Books
+JOIN Order_Detail ON Books.BookID = Order_Detail.BookID
+JOIN Orders ON Order_Detail.OrderID = Orders.OrderID
+JOIN Customer ON Orders.CID = Customer.CID
+WHERE (Customer.LastName = 'lastname1' AND Customer.FirstName = 'firstname1')
+   OR (Customer.LastName = 'lastname4' AND Customer.FirstName = 'firstname4');
+
+
+
+11.SELECT DISTINCT Books.Title
+FROM Books
+JOIN Order_Detail ON Books.BookID = Order_Detail.BookID
+JOIN Orders ON Order_Detail.OrderID = Orders.OrderID
+JOIN Employee ON Orders.EmployeeID = Employee.EmployeeID
+WHERE Employee.LastName = 'lastname6' AND Employee.FirstName = 'firstname6';
+
+
+
+12.SELECT Books.Title, SUM(Order_Detail.Quantity) AS TotalQuantity
+FROM Books
+JOIN Order_Detail ON Books.BookID = Order_Detail.BookID
+GROUP BY Books.BookID
+ORDER BY TotalQuantity ASC;
+
+
+
+13.SELECT Customer.FirstName, Customer.LastName
+FROM Customer
+JOIN Orders ON Customer.CID = Orders.CID
+JOIN Order_Detail ON Orders.OrderID = Order_Detail.OrderID
+GROUP BY Customer.CID
+HAVING COUNT(DISTINCT Order_Detail.BookID) >= 2;
+
+
+
+14.SELECT DISTINCT Customer.FirstName, Customer.LastName, Books.Title
+FROM Customer
+JOIN Orders ON Customer.CID = Orders.CID
+JOIN Order_Detail ON Orders.OrderID = Order_Detail.OrderID
+JOIN Books ON Order_Detail.BookID = Books.BookID
+JOIN Subjects ON Books.SubjectID = Subjects.SubjectID
+WHERE Subjects.CategoryName IN ('category3', 'category4');
+
+
+
+15.SELECT DISTINCT Customer.FirstName, Customer.LastName
+FROM Customer
+JOIN Orders ON Customer.CID = Orders.CID
+JOIN Order_Detail ON Orders.OrderID = Order_Detail.OrderID
+JOIN Books ON Order_Detail.BookID = Books.BookID
+WHERE Books.Author = 'author1';
+
+
+
+16.SELECT Employee.FirstName, Employee.LastName, SUM(Books.UnitPrice * Order_Detail.Quantity) AS TotalSales
+FROM Employee
+JOIN Orders ON Employee.EmployeeID = Orders.EmployeeID
+JOIN Order_Detail ON Orders.OrderID = Order_Detail.OrderID
+JOIN Books ON Order_Detail.BookID = Books.BookID
+GROUP BY Employee.EmployeeID;
+
+
+
+17.SELECT Books.Title, SUM(Order_Detail.Quantity) AS Quantity
+FROM Books
+JOIN Order_Detail ON Books.BookID = Order_Detail.BookID
+JOIN Orders ON Order_Detail.OrderID = Orders.OrderID
+WHERE Orders.ShippedDate IS NULL AND Orders.OrderDate <= '2016-08-04'
+GROUP BY Books.BookID;
+
+
+
+18.SELECT Customer.FirstName, Customer.LastName, SUM(Order_Detail.Quantity) AS TotalQuantity
+FROM Customer
+JOIN Orders ON Customer.CID = Orders.CID
+JOIN Order_Detail ON Orders.OrderID = Order_Detail.OrderID
+GROUP BY Customer.CID
+HAVING SUM(Order_Detail.Quantity) > 1
+ORDER BY TotalQuantity DESC;
+
+
+
+19.SELECT Customer.FirstName, Customer.LastName, Customer.Phone
+FROM Customer
+JOIN Orders ON Customer.CID = Orders.CID
+JOIN Order_Detail ON Orders.OrderID = Order_Detail.OrderID
+GROUP BY Customer.CID
+HAVING SUM(Order_Detail.Quantity) > 3;
+
+
